@@ -1,5 +1,6 @@
 const fastify = require("fastify")({
   bodyLimit: 1024 * 1024 * 1024,
+  logger: true,
 });
 const axios = require("axios");
 const { MEDAL_URL, ORACLE_URL, KONSTANT_URL } = process.env;
