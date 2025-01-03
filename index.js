@@ -41,7 +41,8 @@ fastify.post("/decompile", async (req, reply) => {
   }
 });
 
-fastify.listen({ port: PORT || 3000 }, (err, address) => {
+// Listen on 0.0.0.0 and handle errors
+fastify.listen({ port: PORT || 3000, host: '0.0.0.0' }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
