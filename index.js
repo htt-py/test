@@ -3,7 +3,7 @@ const fastify = require("fastify")({
 });
 const axios = require("axios");
 const { MEDAL_URL, ORACLE_URL, KONSTANT_URL, PORT } = process.env;
-const cache = require("@fastify/caching");
+const cache = require("@fastify/cache");
 const crypto = require("crypto");
 fastify.register(cache, {
   privacy: "public",
@@ -28,7 +28,9 @@ fastify.post("/decompile", async (request, reply) => {
 
   const cachedResponse = await fastify.cache.get(cacheKey);
   if (cachedResponse) {
+    console.log('found in cache')
     return reply.send(cachedResponse);
+    
   }
 
   if (key?.startsWith("Bearer ")) {
@@ -51,10 +53,11 @@ fastify.post("/decompile", async (request, reply) => {
 
   try {
     const response = await axios.post(url, payload, { headers });
-    fastify.cache.set(cacheKey, response.data);
-    reply.send(response.data);
+    // Cache the decompiled response
+    await fastify.cache.set(cacheKey, response.data); // Cache the response for future use
+    return reply.send(response.data);
   } catch (error) {
-    reply
+    return reply
       .code(error?.response?.status || 500)
       .send({ error: error?.response?.data || "Internal Server Error" });
   }
