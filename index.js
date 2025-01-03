@@ -41,6 +41,10 @@ fastify.post("/decompile", async (req, reply) => {
   }
 });
 
-fastify.listen(PORT || 3000, () => {
-  console.log(`Server running on port ${PORT || 3000}`);
+fastify.listen({ port: PORT || 3000 }, (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Server running at ${address}`);
 });
