@@ -3,7 +3,7 @@ const fastify = require("fastify")({
 });
 const axios = require("axios");
 const { MEDAL_URL, ORACLE_URL, KONSTANT_URL, PORT } = process.env;
-const cache = require("@fastify/cache");
+const cache = require("@fastify/caching");
 const crypto = require("crypto");
 fastify.register(cache, {
   privacy: "public",
